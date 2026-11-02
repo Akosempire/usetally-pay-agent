@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invoice · Usetally Pay Agent (demo)</title>
+<style>
+  :root { --bg: #f6f7f9; --panel: #fff; --line: #eceef2; --ink: #101828; --ink-2: #475467; --ink-3: #98a2b3; --ok: #067647; --ok-soft: #ecfdf3; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #000; --panel: #0b0b0c; --line: #1c1c1f; --ink: #f2f4f7; --ink-2: #b4bac5; --ink-3: #737a86; --ok: #47cd89; --ok-soft: rgba(71,205,137,.12); } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 460px; margin: 0 auto; padding: 32px 16px; }
+  .note { font-size: 12px; color: var(--ink-3); text-align: center; margin-bottom: 14px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px; box-shadow: 0 8px 24px -12px rgba(16,24,40,.18); }
+  .k { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+  h1 { margin: 6px 0 2px; font-size: 30px; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+  table { width: 100%; border-collapse: collapse; margin: 18px 0; } td { padding: 7px 0; border-bottom: 1px solid var(--line); } td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+  button { width: 100%; height: 48px; border: 0; border-radius: 999px; font: inherit; font-weight: 700; font-size: 15px; cursor: pointer; background: #ffc439; color: #111; }
+  button:disabled { opacity: .6; cursor: default; }
+  .paid { display: none; margin-top: 14px; padding: 12px; border-radius: 10px; background: var(--ok-soft); color: var(--ok); font-weight: 600; text-align: center; }
+</style>
+</head>
+<body>
+<main>
+  <p class="note">Demo customer page. With PayPal keys set, customers get PayPal's real invoice page instead.</p>
+  <div class="card">
+    <p class="k" id="num"></p>
+    <h1 id="due"></h1>
+    <p style="margin:0;color:var(--ink-2)" id="who"></p>
+    <table id="items"></table>
+    <button id="pay" type="button">Pay with PayPal (demo)</button>
+    <p class="paid" id="done">Paid. Thank you! The business sees it straight away.</p>
+  </div>
+</main>
+<script>
+const inv = __INVOICE__;
+const fmt = (v) => new Intl.NumberFormat("en", { style: "currency", currency: inv.currency || "USD" }).format(v || 0);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+function show(i) {
+  document.getElementById("num").textContent = `Invoice #${i.number} · due ${i.due_date || ""}`;
+  document.getElementById("due").textContent = fmt(i.amount_due);
+  document.getElementById("who").textContent = `For ${i.customer}`;
+  document.getElementById("items").innerHTML = i.items.map((x) => `<tr><td>${esc(x.quantity)} × ${esc(x.name)}</td><td>${fmt(x.quantity * x.unit_price)}</td></tr>`).join("") + `<tr><td><b>Total</b></td><td><b>${fmt(i.total)}</b></td></tr>`;
+  const paid = !i.amount_due || ["PAID", "MARKED_AS_PAID"].includes(i.status);
+  document.getElementById("pay").style.display = paid ? "none" : "";
+  document.getElementById("done").style.display = paid ? "block" : "none";
+}
+show(inv);
+document.getElementById("pay").addEventListener("click", async (e) => {
+  e.target.disabled = true;
+  const r = await fetch(location.pathname, { method: "POST" }).then((x) => x.json());
+  if (r.invoice) show(r.invoice); else e.target.disabled = false;
+});
+</script>
+</body>
+</html>

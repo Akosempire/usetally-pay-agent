@@ -1,0 +1,33 @@
+{
+  "name": "usetally-pay-agent",
+  "version": "1.0.0",
+  "description": "Invoice by chatting, get paid with PayPal: an AI agent (MCP server + built-in chat) on the PayPal Invoicing API.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "stdio": "node src/stdio.js",
+    "test": "node --test test/*.test.js"
+  },
+  "keywords": [
+    "paypal",
+    "invoicing",
+    "mcp",
+    "ai-agent",
+    "model-context-protocol",
+    "claude",
+    "chatgpt"
+  ],
+  "author": "Usetally",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.4.3"
+  },
+  "type": "module",
+  "bin": {
+    "usetally-pay-agent": "src/stdio.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

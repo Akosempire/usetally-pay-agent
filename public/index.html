@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Usetally Pay Agent</title>
+<meta name="description" content="Invoice by chatting. Get paid with PayPal. An AI agent for freelancers and small businesses, over MCP.">
+<style>
+  :root {
+    --bg: #ffffff; --panel: #ffffff; --soft: #f6f7f9; --line: #eceef2; --line-2: #dfe2e8;
+    --ink: #101828; --ink-2: #475467; --ink-3: #98a2b3;
+    --brand: #175cd3; --brand-soft: #eff4ff; --ok: #067647; --ok-soft: #ecfdf3; --warn: #b54708; --warn-soft: #fffaeb; --bad: #b42318; --bad-soft: #fef3f2;
+    --shadow: 0 1px 2px rgba(16,24,40,.05), 0 8px 24px -12px rgba(16,24,40,.14);
+    --r: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #000; --panel: #0b0b0c; --soft: #141416; --line: #1c1c1f; --line-2: #2a2a2e; --ink: #f2f4f7; --ink-2: #b4bac5; --ink-3: #737a86;
+      --brand: #5a9dff; --brand-soft: rgba(90,157,255,.12); --ok: #47cd89; --ok-soft: rgba(71,205,137,.12); --warn: #fdb022; --warn-soft: rgba(253,176,34,.12); --bad: #f97066; --bad-soft: rgba(249,112,102,.12);
+      --shadow: 0 1px 2px rgba(0,0,0,.6), 0 8px 24px -12px rgba(0,0,0,.8); }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
+  button, input, textarea { font: inherit; color: inherit; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 20px 16px 48px; }
+  header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -.01em; font-size: 16px; }
+  .logo { width: 30px; height: 30px; border-radius: 9px; background: var(--brand); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 15px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: var(--soft); color: var(--ink-2); white-space: nowrap; }
+  .chip.ok { background: var(--ok-soft); color: var(--ok); } .chip.warn { background: var(--warn-soft); color: var(--warn); } .chip.bad { background: var(--bad-soft); color: var(--bad); } .chip.brand { background: var(--brand-soft); color: var(--brand); }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  h1 { font-size: clamp(24px, 3.4vw, 34px); line-height: 1.1; letter-spacing: -.03em; margin: 8px 0 6px; }
+  .lead { color: var(--ink-2); margin: 0 0 20px; max-width: 640px; font-size: 15px; }
+  .card { background: var(--panel); border-radius: var(--r); box-shadow: var(--shadow); border: 1px solid var(--line); }
+  .totals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+  .total { padding: 14px 16px; } .total p { margin: 0; } .total .k { font-size: 12px; color: var(--ink-3); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+  .total .v { font-size: 22px; font-weight: 700; letter-spacing: -.02em; margin-top: 4px; font-variant-numeric: tabular-nums; } .total .s { font-size: 12px; color: var(--ink-3); }
+  .grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  .panel-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+  .panel-h h2 { margin: 0; font-size: 14px; font-weight: 650; }
+  /* chat */
+  .chat { display: flex; flex-direction: column; height: 600px; }
+  .log { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .msg { max-width: 86%; padding: 9px 13px; border-radius: 14px; white-space: pre-wrap; word-wrap: break-word; }
+  .me { align-self: flex-end; background: var(--ink); color: var(--bg); border-bottom-right-radius: 5px; }
+  .ai { align-self: flex-start; background: var(--soft); border-bottom-left-radius: 5px; }
+  .tool { align-self: flex-start; font-size: 12px; color: var(--ink-2); display: flex; align-items: center; gap: 6px; }
+  .tool b { color: var(--ink); font-weight: 600; }
+  .sugg { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 16px 12px; }
+  .sugg button { border: 1px solid var(--line-2); background: var(--panel); border-radius: 999px; padding: 6px 11px; font-size: 12.5px; cursor: pointer; color: var(--ink-2); text-align: left; }
+  .sugg button:hover { border-color: var(--ink-3); color: var(--ink); }
+  form.say { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--line); }
+  form.say textarea { flex: 1; resize: none; height: 44px; border: 1px solid var(--line-2); background: var(--panel); border-radius: 10px; padding: 11px 12px; outline: none; }
+  form.say textarea:focus { border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-soft); }
+  .btn { border: 0; border-radius: 10px; padding: 0 16px; height: 44px; font-weight: 650; cursor: pointer; background: var(--brand); color: #fff; box-shadow: inset 0 -2px 0 rgba(0,0,0,.18); }
+  .btn:disabled { opacity: .5; cursor: default; }
+  .btn.ghost { background: var(--soft); color: var(--ink); box-shadow: none; height: 32px; padding: 0 12px; font-size: 12.5px; }
+  .off { margin: 16px; padding: 14px; border-radius: 10px; background: var(--soft); color: var(--ink-2); font-size: 13px; }
+  /* invoices */
+  .inv { list-style: none; margin: 0; padding: 0; max-height: 600px; overflow-y: auto; }
+  .inv li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  .inv li.flash { animation: flash 1.6s ease-out; }
+  @keyframes flash { from { background: var(--brand-soft); } to { background: transparent; } }
+  .inv .who { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .inv .meta { color: var(--ink-3); font-size: 12px; }
+  .inv .amt { text-align: right; font-weight: 650; font-variant-numeric: tabular-nums; }
+  .inv a { color: var(--brand); text-decoration: none; font-size: 12px; font-weight: 600; }
+  .side { display: flex; flex-direction: column; gap: 16px; }
+  .connect { padding: 16px; } .connect p { margin: 0 0 10px; color: var(--ink-2); font-size: 13px; }
+  .url { display: flex; gap: 8px; } .url code { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: var(--soft); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; font-size: 12.5px; }
+  .feed { list-style: none; margin: 0; padding: 4px 0; max-height: 220px; overflow-y: auto; }
+  .feed li { padding: 7px 16px; font-size: 12.5px; color: var(--ink-2); display: flex; gap: 8px; } .feed time { color: var(--ink-3); flex-shrink: 0; font-variant-numeric: tabular-nums; }
+  .empty { padding: 24px 16px; color: var(--ink-3); text-align: center; }
+  footer { margin-top: 28px; color: var(--ink-3); font-size: 12px; text-align: center; } footer a { color: inherit; }
+  @media (max-width: 860px) { .grid { grid-template-columns: minmax(0, 1fr); } .chat { height: 520px; } .totals { grid-template-columns: minmax(0, 1fr); } .total .v { font-size: 20px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><span class="logo" aria-hidden="true">U</span>Usetally Pay Agent</div>
+    <span id="mode" class="chip"><span class="dot"></span>Loading…</span>
+  </header>
+
+  <h1>Invoice by chatting. Get paid with PayPal.</h1>
+  <p class="lead">Tell the agent what you sold. It makes the PayPal invoice, sends it when you say so, reminds late payers in your tone, and tells you who owes what. Use it here, or from ChatGPT, Claude or Grok over MCP.</p>
+
+  <section class="totals" aria-label="Totals">
+    <div class="card total"><p class="k">Still owed</p><p class="v" id="t-owed">—</p><p class="s" id="t-owed-s">&nbsp;</p></div>
+    <div class="card total"><p class="k">Overdue</p><p class="v" id="t-over">—</p><p class="s" id="t-over-s">&nbsp;</p></div>
+    <div class="card total"><p class="k">Collected</p><p class="v" id="t-coll">—</p><p class="s">through PayPal and recorded payments</p></div>
+  </section>
+
+  <div class="grid">
+    <section class="card chat" aria-label="Chat with the agent">
+      <div class="panel-h"><h2>Chat</h2><button class="btn ghost" id="reset" type="button">New chat</button></div>
+      <div class="log" id="log" aria-live="polite"></div>
+      <div class="sugg" id="sugg"></div>
+      <form class="say" id="say">
+        <label for="text" style="position:absolute;left:-9999px">Message</label>
+        <textarea id="text" placeholder="Tell the agent what you sold, or ask who owes you…" autocomplete="off"></textarea>
+        <button class="btn" id="go" type="submit">Send</button>
+      </form>
+    </section>
+
+    <div class="side">
+      <section class="card" aria-label="Invoices">
+        <div class="panel-h"><h2>PayPal invoices</h2><span class="meta" id="count" style="color:var(--ink-3);font-size:12px"></span></div>
+        <ul class="inv" id="inv"><li class="empty">Loading…</li></ul>
+      </section>
+      <section class="card connect" aria-label="Connect an AI assistant">
+        <h2 style="margin:0 0 6px;font-size:14px">Use it from ChatGPT, Claude or Grok</h2>
+        <p>Add this MCP server address as a custom connector. Invoices made there show up here live.</p>
+        <div class="url"><code id="mcp">…</code><button class="btn ghost" id="copy" type="button">Copy</button></div>
+      </section>
+      <section class="card" aria-label="Activity">
+        <div class="panel-h"><h2>Activity</h2></div>
+        <ul class="feed" id="feed"><li>Nothing yet.</li></ul>
+      </section>
+    </div>
+  </div>
+  <footer>Open source (MIT) · Built on the PayPal Invoicing API and the Model Context Protocol · by <a href="https://usetally.cc">Usetally</a></footer>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const fmt = (v, c) => { try { return new Intl.NumberFormat("en", { style: "currency", currency: c || "USD" }).format(v || 0); } catch { return `${c} ${Number(v || 0).toFixed(2)}`; } };
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+let key = ""; try { key = localStorage.getItem("upa-key") || ""; } catch {}
+let messages = []; let state = null; let seen = new Map(); let busy = false;
+const SUGGEST = [
+  "Invoice Northwind Studio (maya@northwind.example) for 2 logo concepts at $600 each, due in 10 days",
+  "Who owes me money?",
+  "Remind everyone who's overdue",
+  "Tom from Lagoon Events paid $300 by bank transfer",
+];
+
+async function api(path, opts = {}) {
+  const res = await fetch(path, { ...opts, headers: { "content-type": "application/json", ...(key ? { "x-access-key": key } : {}), ...(opts.headers || {}) } });
+  if (res.status === 401) {
+    const k = prompt("This demo is locked. Enter the access key:");
+    if (k) { key = k.trim(); try { localStorage.setItem("upa-key", key); } catch {} return api(path, opts); }
+  }
+  return res.json();
+}
+
+const STATUS = { DRAFT: ["Draft", ""], SENT: ["Sent", "brand"], PARTIALLY_PAID: ["Part paid", "warn"], PAID: ["Paid", "ok"], MARKED_AS_PAID: ["Paid", "ok"], CANCELLED: ["Cancelled", ""], SCHEDULED: ["Scheduled", "brand"], UNPAID: ["Unpaid", "brand"] };
+function badge(s) {
+  const [label, tone] = s.overdue ? ["Overdue", "bad"] : STATUS[s.status] || [s.status, ""];
+  return `<span class="chip ${tone}"><span class="dot"></span>${esc(label)}</span>`;
+}
+
+function render() {
+  const s = state; if (!s) return;
+  $("mode").className = `chip ${s.mode === "demo" ? "warn" : "ok"}`;
+  $("mode").innerHTML = `<span class="dot"></span>${s.mode === "demo" ? "Demo mode (no PayPal keys)" : `PayPal ${s.mode}`}`;
+  $("mcp").textContent = s.mcp_url + (s.locked ? "?key=…" : "");
+  const t = s.totals[0] || { currency: "USD", owed: 0, overdue: 0, overdue_count: 0, collected: 0 };
+  $("t-owed").textContent = fmt(t.owed, t.currency);
+  $("t-owed-s").textContent = `${s.invoices.filter((i) => ["SENT", "PARTIALLY_PAID"].includes(i.status)).length} unpaid invoices`;
+  $("t-over").textContent = fmt(t.overdue, t.currency); $("t-over").style.color = t.overdue ? "var(--bad)" : "";
+  $("t-over-s").textContent = t.overdue_count ? `${t.overdue_count} past the due date` : "Nothing late";
+  $("t-coll").textContent = fmt(t.collected, t.currency);
+  $("count").textContent = `${s.invoices.length} recent`;
+  $("inv").innerHTML = s.invoices.length ? s.invoices.map((i) => {
+    const changed = seen.has(i.id) && seen.get(i.id) !== i.status + i.amount_due;
+    return `<li class="${changed || (seen.size && !seen.has(i.id)) ? "flash" : ""}">
+      <span class="who">${esc(i.customer)}</span><span class="amt">${fmt(i.total, i.currency)}</span>
+      <span class="meta">#${esc(i.number || "")} · due ${esc(i.due_date || "—")}${i.amount_due && i.amount_due !== i.total ? ` · ${fmt(i.amount_due, i.currency)} left` : ""}${i.pay_link ? ` · <a href="${esc(i.pay_link)}" target="_blank" rel="noopener">Pay link</a>` : ""}</span>${badge(i)}
+    </li>`;
+  }).join("") : `<li class="empty">No invoices yet. Ask the agent to make one.</li>`;
+  seen = new Map(s.invoices.map((i) => [i.id, i.status + i.amount_due]));
+  $("feed").innerHTML = s.activity.length ? s.activity.slice(0, 20).map((a) => `<li><time>${new Date(a.at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</time><span>${esc(describe(a))}</span></li>`).join("") : "<li>Nothing yet.</li>";
+  const off = !s.agent;
+  $("text").disabled = off; $("go").disabled = off || busy;
+  if (off && !$("log").children.length) $("log").innerHTML = `<div class="off">The built-in chat is off on this server (no ANTHROPIC_API_KEY). Connect ChatGPT, Claude or Grok with the MCP address on this page and chat there; invoices appear here live.</div>`;
+  $("sugg").innerHTML = off || messages.length ? "" : SUGGEST.map((q) => `<button type="button">${esc(q)}</button>`).join("");
+}
+
+const VERB = { create_invoice: "Drafted", send_invoice: "Sent", remind_invoice: "Reminded", record_payment: "Recorded a payment on", cancel_invoice: "Cancelled", get_invoice: "Looked up", list_invoices: "Listed invoices", money_summary: "Added up totals" };
+function describe(a) {
+  if (a.source === "paypal") return `PayPal: ${a.invoice ? `${a.invoice.customer} paid ${fmt(a.invoice.paid, a.invoice.currency)}` : a.tool}`;
+  const who = a.source === "mcp" ? "Your AI assistant" : "Chat";
+  const inv = a.invoice ? ` ${a.invoice.customer} · ${fmt(a.invoice.total, a.invoice.currency)}` : "";
+  return `${who}: ${VERB[a.tool] || a.tool}${inv}${a.ok ? "" : " (failed)"}`;
+}
+
+function add(cls, html) { const d = document.createElement("div"); d.className = cls; d.innerHTML = html; $("log").appendChild(d); $("log").scrollTop = $("log").scrollHeight; return d; }
+
+async function ask(text) {
+  if (!text.trim() || busy) return;
+  busy = true; $("go").disabled = true; $("sugg").innerHTML = "";
+  add("msg me", esc(text));
+  messages.push({ role: "user", content: text });
+  const thinking = add("tool", "Working…");
+  const r = await api("/api/chat", { method: "POST", body: JSON.stringify({ messages }) }).catch(() => ({ error: "Couldn't reach the server." }));
+  thinking.remove();
+  for (const e of r.events || []) if (e.tool !== "list_invoices" && e.tool !== "money_summary" && e.tool !== "get_invoice") add("tool", `${e.ok ? "✓" : "✕"} <b>${esc(VERB[e.tool] || e.tool)}</b>${e.invoice ? ` ${esc(e.invoice.customer)} · ${fmt(e.invoice.total, e.invoice.currency)}` : ""}`);
+  if (r.error) add("msg ai", esc(r.error));
+  else { add("msg ai", esc(r.reply || "Done.")); messages = r.messages || messages; }
+  busy = false; $("go").disabled = false;
+  refresh();
+}
+
+$("say").addEventListener("submit", (e) => { e.preventDefault(); const t = $("text").value; $("text").value = ""; ask(t); });
+$("text").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("say").requestSubmit(); } });
+$("sugg").addEventListener("click", (e) => { if (e.target.closest("button")) ask(e.target.textContent); });
+$("reset").addEventListener("click", () => { messages = []; $("log").innerHTML = ""; render(); });
+$("copy").addEventListener("click", async () => { try { await navigator.clipboard.writeText(state.mcp_url); $("copy").textContent = "Copied"; setTimeout(() => ($("copy").textContent = "Copy"), 1500); } catch {} });
+
+async function refresh() { const s = await api("/api/state").catch(() => null); if (s && !s.error) { state = s; render(); } }
+refresh(); setInterval(refresh, 4000);
+</script>
+</body>
+</html>

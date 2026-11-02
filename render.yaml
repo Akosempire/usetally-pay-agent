@@ -1,0 +1,26 @@
+# One-click deploy on Render (render.com → New → Blueprint → this repo)
+services:
+  - type: web
+    name: usetally-pay-agent
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: PAYPAL_ENV
+        value: sandbox
+      - key: PAYPAL_WEBHOOK_ID
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: AGENT_MODEL
+        value: claude-sonnet-5-5
+      - key: PUBLIC_URL
+        sync: false
+      - key: ACCESS_KEY
+        sync: false

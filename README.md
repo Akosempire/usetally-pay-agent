@@ -40,7 +40,7 @@ It never sends, reminds, records or cancels without asking: every tool tells the
 Needs Node.js 20 or newer.
 
 ```bash
-git clone https://github.com/<you>/usetally-pay-agent && cd usetally-pay-agent
+git clone https://github.com/Akosempire/usetally-pay-agent && cd usetally-pay-agent
 npm install
 cp .env.example .env   # optional: add PayPal sandbox keys and an Anthropic key
 npm start              # http://localhost:3000

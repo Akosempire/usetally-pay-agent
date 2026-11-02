@@ -198,6 +198,78 @@
   .feed time { font: 11.5px var(--mono); color: var(--ink-3); flex-shrink: 0; padding-top: 1px; }
   .empty { padding: 28px 16px; text-align: center; color: var(--ink-3); }
 
+  /* hero glow */
+  .hello { position: relative; }
+  .hello::before { content: ""; position: absolute; left: 50%; top: 22%; width: min(760px, 90%); height: 260px; transform: translateX(-50%); background: radial-gradient(closest-side, var(--acc-soft), transparent); filter: blur(10px); pointer-events: none; }
+  .hello-in { position: relative; }
+  .model-chip { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; border-radius: 999px; border: 1px solid var(--line); font: 500 11.5px var(--mono); color: var(--ink-2); }
+  .model-chip .i { width: 13px; height: 13px; color: var(--acc); }
+  .model-chip:hover { border-color: var(--line-2); color: var(--ink); }
+  .msg.ai .body p { margin: 0 0 8px; } .msg.ai .body p:last-child { margin: 0; }
+  .msg.ai .body ul { margin: 4px 0 8px; padding-left: 18px; } .msg.ai .body li { margin: 2px 0; }
+  .msg.ai .tools { display: flex; gap: 4px; margin-top: 6px; opacity: 0; transition: opacity .15s; }
+  .msg.ai:hover .tools { opacity: 1; }
+  .mini { display: inline-flex; align-items: center; gap: 5px; height: 26px; padding: 0 8px; border-radius: 6px; font-size: 12px; color: var(--ink-3); }
+  .mini:hover { background: var(--hover); color: var(--ink); } .mini .i { width: 13px; height: 13px; }
+  .chat-item .del { display: none; flex-shrink: 0; opacity: 0; color: var(--ink-3); padding: 2px; border-radius: 6px; }
+  .chat-item:hover .del { display: grid; opacity: 1; }
+  .chat-item .pin { display: none !important; } .chat-item:hover .pin, .chat-item .pin.on { display: grid !important; } .chat-item .del:hover { color: var(--bad); }
+  .chat-item .del .i, .chat-item .pin .i { width: 15px; height: 15px; }
+
+  /* dashboard extras */
+  .filters { display: flex; align-items: center; gap: 6px; padding: 10px 16px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .fchip { height: 28px; padding: 0 11px; border-radius: 999px; font-size: 12.5px; font-weight: 600; color: var(--ink-2); border: 1px solid var(--line); }
+  .fchip.on { background: var(--ink); color: var(--main); border-color: var(--ink); }
+  .fchip b { font-weight: 600; opacity: .6; margin-left: 4px; }
+  .fsearch { margin-left: auto; display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--well); color: var(--ink-3); }
+  .fsearch input { border: 0; background: transparent; outline: none; width: 140px; font-size: 13px; color: var(--ink); }
+  .fsearch .i { width: 14px; height: 14px; }
+  .rows li { cursor: pointer; } .rows li:hover { background: var(--hover); }
+  .bars { padding: 14px 16px 16px; display: grid; gap: 10px; }
+  .bar-row { display: grid; grid-template-columns: 86px minmax(0, 1fr) 28px; align-items: center; gap: 10px; font-size: 12.5px; color: var(--ink-2); }
+  .bar-track { height: 8px; border-radius: 999px; background: var(--hover); overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 999px; transition: width .4s ease; }
+  .bar-row b { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink); }
+
+  /* drawer + modal */
+  .veil { position: fixed; inset: 0; z-index: 40; background: rgba(5,5,4,.45); backdrop-filter: blur(2px); display: none; }
+  .veil.on { display: block; }
+  .drawer-panel { position: fixed; top: 0; right: 0; bottom: 0; z-index: 41; width: min(440px, 100%); background: var(--raise); border-left: 1px solid var(--line); box-shadow: var(--shadow); transform: translateX(100%); transition: transform .22s ease; display: flex; flex-direction: column; }
+  .drawer-panel.on { transform: none; }
+  .panel-h { display: flex; align-items: center; gap: 10px; padding: 16px 18px; border-bottom: 1px solid var(--line); }
+  .panel-h h2 { margin: 0; font-size: 16px; font-weight: 600; flex: 1; min-width: 0; }
+  .panel-b { padding: 18px; overflow-y: auto; flex: 1; }
+  .big { font-size: 30px; font-weight: 600; letter-spacing: -.02em; margin: 4px 0 2px; font-variant-numeric: tabular-nums; }
+  .facts { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; margin: 18px 0; font-size: 13px; }
+  .facts dt { color: var(--ink-3); } .facts dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+  .stack { display: grid; gap: 8px; margin-top: 18px; }
+  .wide-btn { display: flex; align-items: center; gap: 10px; width: 100%; height: 42px; padding: 0 14px; border-radius: 9px; border: 1px solid var(--line); font-weight: 600; font-size: 13.5px; color: var(--ink); text-decoration: none; }
+  .wide-btn:hover { background: var(--hover); } .wide-btn .i { width: 16px; height: 16px; color: var(--acc); }
+  .wide-btn.acc { background: var(--acc-btn); color: var(--on-acc); border-color: transparent; } .wide-btn.acc .i { color: var(--on-acc); }
+  .modal { position: fixed; z-index: 41; left: 50%; top: 50%; width: min(560px, calc(100% - 24px)); max-height: calc(100dvh - 40px); transform: translate(-50%, -48%) scale(.98); opacity: 0; pointer-events: none; transition: .18s ease; background: var(--raise); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 30px 80px -30px rgba(0,0,0,.6); display: flex; flex-direction: column; }
+  .modal.on { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%); }
+  .set { padding: 18px 0; border-bottom: 1px solid var(--line); } .set:first-child { padding-top: 0; } .set:last-child { border-bottom: 0; padding-bottom: 0; }
+  .set h3 { margin: 0 0 2px; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; } .set h3 .i { width: 16px; height: 16px; color: var(--acc); }
+  .set > p { margin: 0 0 12px; font-size: 12.5px; color: var(--ink-3); }
+  .field { display: flex; gap: 8px; } .field input, .field select { flex: 1; min-width: 0; height: 38px; border-radius: 8px; border: 1px solid var(--line-2); background: var(--well); padding: 0 12px; outline: none; color: var(--ink); }
+  .field input:focus, .field select:focus { border-color: var(--acc); box-shadow: 0 0 0 3px var(--acc-soft); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 38px; padding: 0 14px; border-radius: 8px; font-weight: 600; font-size: 13px; background: var(--hover); color: var(--ink); white-space: nowrap; }
+  .btn .i { width: 15px; height: 15px; } .btn:hover { filter: brightness(1.08); } .btn:disabled { opacity: .5; cursor: default; }
+  .btn.acc { background: var(--acc-btn); color: var(--on-acc); } .btn.danger { color: var(--bad); background: var(--bad-soft); }
+  .btn-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .key-state { display: flex; align-items: center; gap: 10px; padding: 10px 12px; margin-bottom: 12px; border-radius: 9px; background: var(--well); border: 1px solid var(--line); font-size: 13px; }
+  .key-state code { font: 12.5px var(--mono); color: var(--ink); }
+  .key-state .grow { flex: 1; min-width: 0; color: var(--ink-2); }
+  .fine { margin: 10px 0 0; font-size: 12px; color: var(--ink-3); }
+  .seg { display: inline-flex; padding: 3px; border-radius: 9px; background: var(--well); border: 1px solid var(--line); }
+  .seg button { height: 30px; padding: 0 12px; border-radius: 6px; font-size: 13px; font-weight: 600; color: var(--ink-2); display: inline-flex; align-items: center; gap: 6px; }
+  .seg button .i { width: 14px; height: 14px; } .seg button.on { background: var(--raise); color: var(--ink); box-shadow: var(--shadow); }
+  .toasts { position: fixed; z-index: 60; left: 50%; bottom: 22px; transform: translateX(-50%); display: grid; gap: 8px; justify-items: center; pointer-events: none; }
+  .toast { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 10px; background: var(--ink); color: var(--main); font-size: 13px; font-weight: 500; box-shadow: var(--shadow); animation: up .2s ease; }
+  .toast .i { width: 15px; height: 15px; }
+  @keyframes up { from { opacity: 0; transform: translateY(6px); } }
+  kbd { font: 11px var(--mono); padding: 1px 5px; border-radius: 4px; border: 1px solid var(--line-2); color: var(--ink-3); }
+
   .scrim { display: none; }
   @media (max-width: 900px) {
     .app, .app.collapsed { grid-template-columns: minmax(0, 1fr); }
@@ -208,6 +280,8 @@
     .kpis, .grid2 { grid-template-columns: minmax(0, 1fr); }
     .bar { padding: 0 12px; } .thread-in, .hello, .dock, .dash-in { padding-left: 16px; padding-right: 16px; }
     .mode span.long { display: none; }
+    .fsearch { margin-left: 0; width: 100%; } .fsearch input { width: 100%; }
+    .hint { display: none; }
   }
 </style>
 </head>
@@ -243,6 +317,13 @@
   <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
   <symbol id="i-plug" viewBox="0 0 24 24"><path d="M12 22v-5M9 8V2M15 8V2M18 8v5a6 6 0 0 1-6 6 6 6 0 0 1-6-6V8z"/></symbol>
   <symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><path d="M12.2 2h-.4a2 2 0 0 0-2 2v.2a2 2 0 0 1-1 1.7l-.4.3a2 2 0 0 1-2 0l-.2-.1a2 2 0 0 0-2.7.7l-.2.4a2 2 0 0 0 .7 2.7l.2.1a2 2 0 0 1 1 1.7v.6a2 2 0 0 1-1 1.7l-.2.1a2 2 0 0 0-.7 2.7l.2.4a2 2 0 0 0 2.7.7l.2-.1a2 2 0 0 1 2 0l.4.3a2 2 0 0 1 1 1.7v.2a2 2 0 0 0 2 2h.4a2 2 0 0 0 2-2v-.2a2 2 0 0 1 1-1.7l.4-.3a2 2 0 0 1 2 0l.2.1a2 2 0 0 0 2.7-.7l.2-.4a2 2 0 0 0-.7-2.7l-.2-.1a2 2 0 0 1-1-1.7v-.6a2 2 0 0 1 1-1.7l.2-.1a2 2 0 0 0 .7-2.7l-.2-.4a2 2 0 0 0-2.7-.7l-.2.1a2 2 0 0 1-2 0l-.4-.3a2 2 0 0 1-1-1.7V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4M21 2l-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/></symbol>
   <symbol id="i-at" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></symbol>
 </svg>
 
@@ -258,6 +339,7 @@
     <div class="search" id="search"><label class="sr" for="q">Search chats</label><input id="q" placeholder="Search chats…" autocomplete="off"></div>
     <div class="chats" id="chats"></div>
     <div class="side-foot">
+      <button class="nav" id="open-settings" type="button"><svg class="i"><use href="#i-gear"/></svg>Settings<span class="badge warn" id="key-flag" style="margin-left:auto;display:none">Add key</span></button>
       <a class="nav" href="https://github.com/Akosempire/usetally-pay-agent#readme" target="_blank" rel="noopener"><svg class="i"><use href="#i-help"/></svg>Help centre<span class="count" title="Tools the agent can use"><svg class="i"><use href="#i-spark"/></svg>8</span></a>
     </div>
   </aside>
@@ -272,6 +354,7 @@
     <div class="bar">
       <button class="icon-btn" id="collapse" type="button" aria-label="Show or hide the sidebar"><svg class="i"><use href="#i-panel"/></svg></button>
       <span class="bar-title" id="bar-title">New chat</span>
+      <button class="icon-btn" id="settings-top" type="button" aria-label="Settings"><svg class="i"><use href="#i-gear"/></svg></button>
       <button class="icon-btn" id="theme" type="button" aria-label="Switch light or dark"><svg class="i"><use href="#i-sun"/></svg></button>
       <span class="avatar" id="avatar" aria-hidden="true">U</span>
     </div>
@@ -280,7 +363,7 @@
     <section class="view on" id="agent" aria-label="Chat with Tally">
       <div class="hello" id="hello">
         <div class="hello-in">
-          <h1>What are we getting paid for today?</h1>
+          <h1 id="greet">What are we getting paid for today?</h1>
           <p>Tally makes PayPal invoices, sends them when you say so, chases late payers and adds it all up.</p>
           <div id="composer-home"></div>
           <ul class="actions" id="actions"></ul>
@@ -301,9 +384,11 @@
           <div class="kpi"><p class="k"><svg class="i"><use href="#i-check"/></svg>Collected</p><p class="v" id="k-coll">—</p><p class="s">Through PayPal and recorded payments</p></div>
         </div>
         <div class="grid2">
-          <section class="card"><div class="card-h"><h2><svg class="i"><use href="#i-receipt"/></svg>PayPal invoices</h2><small id="inv-count"></small></div><ul class="rows" id="inv"><li class="empty">Loading…</li></ul></section>
+          <section class="card"><div class="card-h"><h2><svg class="i"><use href="#i-receipt"/></svg>PayPal invoices</h2><small id="inv-count"></small></div>
+            <div class="filters" id="filters"></div><ul class="rows" id="inv"><li class="empty">Loading…</li></ul></section>
           <div class="side-col">
             <section class="card"><div class="card-h"><h2><svg class="i"><use href="#i-chart"/></svg>Where the money is</h2><small id="chart-cur"></small></div><div class="chart" id="chart"></div><div class="legend" id="legend"></div></section>
+            <section class="card"><div class="card-h"><h2><svg class="i"><use href="#i-compare"/></svg>Invoices by status</h2></div><div class="bars" id="bars"></div></section>
             <section class="card connect"><div class="card-h" style="margin:-16px -16px 14px"><h2><svg class="i"><use href="#i-plug"/></svg>Use Tally in your AI assistant</h2></div>
               <p>Add this MCP server as a custom connector. Same tools, same invoices.</p>
               <div class="url"><code id="mcp">…</code><button class="pill-btn" id="copy" type="button"><svg class="i"><use href="#i-copy"/></svg>Copy</button></div>
@@ -317,13 +402,54 @@
   </main>
 </div>
 
+<div class="veil" id="veil"></div>
+<aside class="drawer-panel" id="inv-panel" aria-label="Invoice details" aria-hidden="true">
+  <div class="panel-h"><h2 id="ip-title">Invoice</h2><button class="icon-btn" data-close type="button" aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <div class="panel-b" id="ip-body"></div>
+</aside>
+<section class="modal" id="settings" role="dialog" aria-modal="true" aria-labelledby="set-title">
+  <div class="panel-h"><h2 id="set-title">Settings</h2><button class="icon-btn" data-close type="button" aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <div class="panel-b">
+    <div class="set">
+      <h3><svg class="i"><use href="#i-key"/></svg>Anthropic API key</h3>
+      <p>Powers the chat on this page. Get one at console.anthropic.com → API keys.</p>
+      <div class="key-state" id="key-state"></div>
+      <div class="field"><label class="sr" for="key-in">API key</label><input id="key-in" type="password" placeholder="sk-ant-…" autocomplete="off" spellcheck="false"><button class="btn" id="key-eye" type="button" aria-label="Show or hide the key"><svg class="i"><use href="#i-eye"/></svg></button></div>
+      <div class="btn-row"><button class="btn acc" id="key-save" type="button"><svg class="i"><use href="#i-check"/></svg>Test &amp; save</button><button class="btn danger" id="key-del" type="button"><svg class="i"><use href="#i-trash"/></svg>Remove key</button></div>
+      <p class="fine"><svg class="i" style="width:13px;height:13px;vertical-align:-2px"><use href="#i-shield"/></svg> Kept only in this browser and sent with each message over HTTPS. The server never stores it. Remove it any time.</p>
+    </div>
+    <div class="set">
+      <h3><svg class="i"><use href="#i-bot"/></svg>Model</h3>
+      <p>Which Claude model Tally uses here.</p>
+      <div class="field"><label class="sr" for="model">Model</label><select id="model"></select></div>
+    </div>
+    <div class="set">
+      <h3><svg class="i"><use href="#i-building"/></svg>Business name</h3>
+      <p>Shown in the sidebar and greeting on this device.</p>
+      <div class="field"><label class="sr" for="biz-in">Business name</label><input id="biz-in" placeholder="Your business" maxlength="60"></div>
+    </div>
+    <div class="set">
+      <h3><svg class="i"><use href="#i-sun"/></svg>Appearance</h3>
+      <p>Light, dark, or follow this device.</p>
+      <div class="seg" id="theme-seg"><button type="button" data-t="light"><svg class="i"><use href="#i-sun"/></svg>Light</button><button type="button" data-t="dark"><svg class="i"><use href="#i-moon"/></svg>Dark</button><button type="button" data-t="system"><svg class="i"><use href="#i-monitor"/></svg>System</button></div>
+    </div>
+    <div class="set">
+      <h3><svg class="i"><use href="#i-trash"/></svg>Chat history</h3>
+      <p>Chats are saved in this browser only.</p>
+      <button class="btn danger" id="clear-chats" type="button"><svg class="i"><use href="#i-trash"/></svg>Delete all chats</button>
+    </div>
+  </div>
+</section>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
 <template id="composer-tpl">
   <form class="composer">
     <label class="sr" for="text">Message Tally</label>
     <textarea name="text" rows="1" placeholder="Ask about your invoices…" autocomplete="off"></textarea>
     <div class="composer-row">
       <button class="icon-btn" type="button" data-mention aria-label="Mention a customer"><svg class="i"><use href="#i-at"/></svg></button>
-      <span class="hint">Enter to send · Shift + Enter for a new line</span>
+      <button class="model-chip" type="button" data-model>Model</button>
+      <span class="hint"><kbd>Enter</kbd> to send · <kbd>/</kbd> to focus</span>
       <button class="send" type="submit" aria-label="Send"><svg class="i"><use href="#i-up"/></svg></button>
     </div>
   </form>
@@ -334,13 +460,20 @@ const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
 const icon = (n) => `<svg class="i"><use href="#i-${n}"/></svg>`;
 const fmt = (v, c) => { try { return new Intl.NumberFormat("en", { style: "currency", currency: c || "USD" }).format(v || 0); } catch { return `${c} ${Number(v || 0).toFixed(2)}`; } };
-const store = { get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { v === null || v === "" ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+};
 
-let key = store.get("upa-key", "");
-let state = null, seen = new Map(), busy = false;
-let chats = store.get("upa-chats", []);           // [{ id, title, pinned, messages, items, at }]
-let current = null;                               // the open chat
+let key = store.get("upa-key", "");                 // demo access key (only if the server is locked)
+let aiKey = store.get("upa-anthropic", "");         // the person's Anthropic key, this browser only
+let model = store.get("upa-model", "");
+let bizName = store.get("upa-biz", "");
+let state = null, seen = new Map(), busy = false, filter = "all", query = "";
+let chats = store.get("upa-chats", []);
+let current = null;
 const saveChats = () => store.set("upa-chats", chats.slice(0, 40));
+const chatReady = () => Boolean(state?.agent || aiKey);
 
 const ACTIONS = [
   ["spark", "Create an invoice", "Invoice Northwind Studio (maya@northwind.example) for 2 logo concepts at $600 each, due in 10 days", true],
@@ -353,67 +486,79 @@ const ACTIONS = [
 ];
 
 // ---------------------------------------------------------------- server
-async function api(path, opts = {}) {
-  const res = await fetch(path, { ...opts, headers: { "content-type": "application/json", ...(key ? { "x-access-key": key } : {}), ...(opts.headers || {}) } });
+async function api(path, opts = {}, withAi = false) {
+  const res = await fetch(path, { ...opts, headers: { "content-type": "application/json", ...(key ? { "x-access-key": key } : {}), ...(withAi && aiKey ? { "x-anthropic-key": aiKey } : {}), ...(opts.headers || {}) } });
   if (res.status === 401) {
     const k = prompt("This demo is locked. Enter the access key:");
-    if (k) { key = k.trim(); store.set("upa-key", key); return api(path, opts); }
+    if (k) { key = k.trim(); store.set("upa-key", key); return api(path, opts, withAi); }
   }
   return res.json();
 }
+function toast(text, ic = "check") {
+  const t = document.createElement("div"); t.className = "toast"; t.innerHTML = `${icon(ic)}${esc(text)}`;
+  $("toasts").appendChild(t); setTimeout(() => t.remove(), 2600);
+}
 
 // ---------------------------------------------------------------- composer
+const modelLabel = () => (model || state?.default_model || "claude-sonnet-5-5").replace(/^claude-/, "").replace(/-(\d)-(\d)$/, " $1.$2");
 function composer(where) {
   const node = $("composer-tpl").content.firstElementChild.cloneNode(true);
   const ta = node.querySelector("textarea");
   ta.addEventListener("input", () => { ta.style.height = "auto"; ta.style.height = Math.min(ta.scrollHeight, 220) + "px"; });
   ta.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); node.requestSubmit(); } });
-  node.addEventListener("submit", (e) => { e.preventDefault(); const t = ta.value; ta.value = ""; ta.style.height = "auto"; ask(t); });
+  node.addEventListener("submit", (e) => { e.preventDefault(); const t = ta.value; if (!t.trim()) return; ta.value = ""; ta.style.height = "auto"; ask(t); });
   node.querySelector("[data-mention]").addEventListener("click", () => {
-    const names = [...new Set((state?.invoices || []).map((i) => i.customer))].slice(0, 6);
-    if (names.length) { ta.value += (ta.value && !ta.value.endsWith(" ") ? " " : "") + names[0]; ta.focus(); }
+    const names = [...new Set((state?.invoices || []).map((i) => i.customer))];
+    if (!names.length) return;
+    const pick = names[(Number(ta.dataset.n || 0)) % names.length]; ta.dataset.n = Number(ta.dataset.n || 0) + 1;
+    ta.value += (ta.value && !ta.value.endsWith(" ") ? " " : "") + pick; ta.focus();
   });
+  node.querySelector("[data-model]").addEventListener("click", () => openSettings("model"));
   $(where).replaceChildren(node);
-  return node;
 }
 composer("composer-home"); composer("composer-dock");
-const homeInput = () => $("composer-home").querySelector("textarea");
+const activeInput = () => (current?.items?.length ? $("composer-dock") : $("composer-home")).querySelector("textarea");
+function paintChips() { document.querySelectorAll("[data-model]").forEach((b) => (b.innerHTML = `${icon("bot")}${esc(modelLabel())}`)); }
 
 $("actions").innerHTML = ACTIONS.map(([ic, label, , first], i) =>
   `<li><button class="act${first ? " focus" : ""}" type="button" data-i="${i}">${icon(ic)}<span>${esc(label)}</span><svg class="i chev"><use href="#i-${first ? "up" : "right"}"/></svg></button></li>`).join("");
 $("actions").addEventListener("click", (e) => {
   const b = e.target.closest(".act"); if (!b) return;
-  const [, , prompt] = ACTIONS[b.dataset.i];
-  if (!prompt) return show("dash");
-  const ta = homeInput(); ta.value = prompt; ta.dispatchEvent(new Event("input")); ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length);
+  const p = ACTIONS[b.dataset.i][2];
+  if (!p) return show("dash");
+  prefill(p);
 });
+function prefill(text) {
+  show("agent");
+  const ta = activeInput(); ta.value = text; ta.dispatchEvent(new Event("input")); ta.focus(); ta.setSelectionRange(text.length, text.length);
+}
 
 // ---------------------------------------------------------------- chats
 function openChat(id) {
   current = chats.find((c) => c.id === id) || null;
-  $("log").innerHTML = "";
-  (current?.items || []).forEach(paint);
-  layout(); renderChats(); show("agent");
-  closeDrawer();
+  $("log").innerHTML = ""; (current?.items || []).forEach(paint);
+  layout(); renderChats(); show("agent"); closeDrawer();
 }
-function newChat() { current = null; $("log").innerHTML = ""; layout(); renderChats(); show("agent"); closeDrawer(); setTimeout(() => homeInput().focus(), 30); }
+function newChat() { current = null; $("log").innerHTML = ""; layout(); renderChats(); show("agent"); closeDrawer(); setTimeout(() => activeInput().focus(), 30); }
 function layout() {
   const has = Boolean(current?.items?.length);
-  $("hello").hidden = has; $("thread").hidden = !has; $("dock").hidden = !has;
-  $("hello").style.display = has ? "none" : ""; $("bar-title").textContent = current?.title || "New chat";
+  $("thread").hidden = !has; $("dock").hidden = !has; $("hello").style.display = has ? "none" : "";
+  if ($("agent").classList.contains("on")) $("bar-title").textContent = current?.title || "New chat";
   if (has) requestAnimationFrame(() => { $("thread").scrollTop = $("thread").scrollHeight; });
 }
 function renderChats() {
   const q = $("q").value.trim().toLowerCase();
   const list = chats.filter((c) => !q || c.title.toLowerCase().includes(q));
-  const row = (c) => `<button class="chat-item${current?.id === c.id ? " on" : ""}" type="button" data-id="${c.id}">${icon("chat")}<span>${esc(c.title)}</span><span class="pin${c.pinned ? " on" : ""}" role="button" tabindex="0" data-pin="${c.id}" aria-label="${c.pinned ? "Unpin" : "Pin"} chat">${icon("pin")}</span></button>`;
+  const row = (c) => `<button class="chat-item${current?.id === c.id ? " on" : ""}" type="button" data-id="${c.id}">${icon("chat")}<span>${esc(c.title)}</span>
+    <span class="pin${c.pinned ? " on" : ""}" role="button" tabindex="0" data-pin="${c.id}" aria-label="${c.pinned ? "Unpin" : "Pin"} chat" title="${c.pinned ? "Unpin" : "Pin"}">${icon("pin")}</span>
+    <span class="del" role="button" tabindex="0" data-del="${c.id}" aria-label="Delete chat" title="Delete">${icon("trash")}</span></button>`;
   const group = (title, items, emptyText) => `<div class="group"><div class="group-h">${title}<svg class="i"><use href="#i-caret"/></svg></div>${items.length ? items.map(row).join("") : `<p class="empty-list">${emptyText}</p>`}</div>`;
-  const pinned = list.filter((c) => c.pinned), recent = list.filter((c) => !c.pinned);
-  $("chats").innerHTML = group("Pinned chats", pinned, q ? "No matches" : "Pin a chat to keep it here") + group("Recent chats", recent, q ? "No matches" : "Your chats show up here");
+  $("chats").innerHTML = group("Pinned chats", list.filter((c) => c.pinned), q ? "No matches" : "Pin a chat to keep it here") + group("Recent chats", list.filter((c) => !c.pinned), q ? "No matches" : "Your chats show up here");
 }
 $("chats").addEventListener("click", (e) => {
-  const pin = e.target.closest("[data-pin]");
-  if (pin) { const c = chats.find((x) => x.id === pin.dataset.pin); c.pinned = !c.pinned; saveChats(); renderChats(); e.stopPropagation(); return; }
+  const pin = e.target.closest("[data-pin]"), del = e.target.closest("[data-del]");
+  if (pin) { const c = chats.find((x) => x.id === pin.dataset.pin); c.pinned = !c.pinned; saveChats(); renderChats(); return; }
+  if (del) { chats = chats.filter((x) => x.id !== del.dataset.del); saveChats(); if (current?.id === del.dataset.del) newChat(); else renderChats(); toast("Chat deleted", "trash"); return; }
   const item = e.target.closest(".chat-item"); if (item) openChat(item.dataset.id);
 });
 $("new-chat").addEventListener("click", newChat);
@@ -425,14 +570,26 @@ const VERB = { create_invoice: "Drafted invoice", send_invoice: "Sent via PayPal
 const STATUS = { DRAFT: ["Draft", ""], SENT: ["Sent", "blue"], PARTIALLY_PAID: ["Part paid", "warn"], PAID: ["Paid", "ok"], MARKED_AS_PAID: ["Paid", "ok"], CANCELLED: ["Cancelled", ""], SCHEDULED: ["Scheduled", "blue"], UNPAID: ["Unpaid", "blue"] };
 const badge = (s) => { const [l, t] = s.overdue ? ["Overdue", "bad"] : STATUS[s.status] || [s.status, ""]; return `<span class="badge ${t}">${esc(l)}</span>`; };
 
+// replies: **bold**, bullet lists, paragraphs (escaped first)
+function md(text) {
+  const blocks = esc(text).split(/\n{2,}/);
+  return blocks.map((b) => {
+    const lines = b.split("\n");
+    if (lines.every((l) => /^\s*([-*•]|\d+\.)\s+/.test(l))) return `<ul>${lines.map((l) => `<li>${l.replace(/^\s*([-*•]|\d+\.)\s+/, "")}</li>`).join("")}</ul>`;
+    return `<p>${lines.join("<br>")}</p>`;
+  }).join("").replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+}
 function paint(it) {
-  const log = $("log");
   const d = document.createElement("div");
   if (it.t === "me") { d.className = "msg me"; d.textContent = it.text; }
-  else if (it.t === "ai") { d.className = "msg ai"; d.innerHTML = `<span class="who">${icon("bot")}</span><div>${esc(it.text)}</div>`; }
+  else if (it.t === "ai") {
+    d.className = "msg ai";
+    d.innerHTML = `<span class="who">${icon("bot")}</span><div><div class="body">${md(it.text)}</div><div class="tools"><button class="mini" type="button" data-copy>${icon("copy")}Copy</button></div></div>`;
+    d.querySelector("[data-copy]").addEventListener("click", async () => { try { await navigator.clipboard.writeText(it.text); toast("Copied"); } catch {} });
+  }
   else if (it.t === "step") { d.className = `step${it.ok ? "" : " bad"}`; d.innerHTML = `${icon(it.ok ? "check" : "x")}${esc(it.text)}`; }
   else if (it.t === "card") { d.className = "inv-card"; d.innerHTML = card(it.inv); }
-  log.appendChild(d);
+  $("log").appendChild(d);
   $("thread").scrollTop = $("thread").scrollHeight;
 }
 function card(i) {
@@ -446,76 +603,161 @@ function push(it) { current.items.push(it); paint(it); }
 async function ask(text) {
   text = String(text || "").trim();
   if (!text || busy) return;
-  if (!state?.agent) { notice(true); return; }
+  if (!chatReady()) { openSettings("key"); toast("Add your Anthropic key to chat", "key"); return; }
   if (!current) { current = { id: Math.random().toString(36).slice(2, 10), title: text.slice(0, 48), pinned: false, messages: [], items: [], at: Date.now() }; chats.unshift(current); }
   busy = true; setSending(true);
   push({ t: "me", text }); layout(); renderChats();
   current.messages.push({ role: "user", content: text });
   const dots = document.createElement("div"); dots.className = "thinking"; dots.innerHTML = "<span></span><span></span><span></span>"; $("log").appendChild(dots);
-  const r = await api("/api/chat", { method: "POST", body: JSON.stringify({ messages: current.messages }) }).catch(() => ({ error: "Couldn't reach the server." }));
+  const r = await api("/api/chat", { method: "POST", body: JSON.stringify({ messages: current.messages, model: model || undefined }) }, true).catch(() => ({ error: "Couldn't reach the server." }));
   dots.remove();
   for (const e of r.events || []) {
     push({ t: "step", ok: e.ok, text: VERB[e.tool] || e.tool });
     if (e.invoice && ["create_invoice", "send_invoice", "record_payment", "get_invoice", "remind_invoice", "cancel_invoice"].includes(e.tool)) push({ t: "card", inv: e.invoice });
   }
-  if (r.error) push({ t: "ai", text: r.error });
+  if (r.error) { push({ t: "ai", text: r.error }); current.messages.pop(); if (r.keyRejected) openSettings("key"); }
   else { push({ t: "ai", text: r.reply || "Done." }); current.messages = r.messages || current.messages; }
   current.at = Date.now(); saveChats();
   busy = false; setSending(false); refresh();
-  $("composer-dock").querySelector("textarea").focus();
+  activeInput().focus();
 }
 function setSending(on) { document.querySelectorAll(".send").forEach((b) => (b.disabled = on)); }
-function notice(force) {
-  const off = state && !state.agent;
-  $("notice-home").innerHTML = off ? `<div class="notice">${icon("help")}<div>The built-in chat needs an Anthropic key on this server (<code>ANTHROPIC_API_KEY</code>). Tally already works in ChatGPT, Claude or Grok: add <code>${esc(state.mcp_url)}</code> as a connector, and watch the Dashboard update live.</div></div>` : "";
-  if (force && off) { show("agent"); $("notice-home").scrollIntoView({ block: "nearest" }); }
+function notice() {
+  $("notice-home").innerHTML = state && !chatReady()
+    ? `<div class="notice">${icon("key")}<div><b>Add your Anthropic API key</b> to chat here: <a href="#" id="notice-set">open Settings</a>. Tally also works right now in ChatGPT, Claude or Grok with <code>${esc(state.mcp_url)}</code>.</div></div>` : "";
+  $("notice-set")?.addEventListener("click", (e) => { e.preventDefault(); openSettings("key"); });
+  $("key-flag").style.display = state && !chatReady() ? "" : "none";
 }
 
 // ---------------------------------------------------------------- dashboard
+const FILTERS = [["all", "All"], ["unpaid", "Unpaid"], ["overdue", "Overdue"], ["paid", "Paid"], ["draft", "Draft"]];
+const keep = {
+  all: () => true, unpaid: (i) => ["SENT", "PARTIALLY_PAID", "UNPAID"].includes(i.status), overdue: (i) => i.overdue,
+  paid: (i) => ["PAID", "MARKED_AS_PAID"].includes(i.status), draft: (i) => i.status === "DRAFT",
+};
 function render() {
   const s = state; if (!s) return;
   const demo = s.mode === "demo";
   $("mode").className = `mode${demo ? " demo" : ""}`;
-  $("mode").innerHTML = `<span class="dot"></span><span>${demo ? "Demo" : `PayPal ${esc(s.mode)}`}</span><span class="long">${s.agent ? " · chat on" : " · MCP ready"}</span>`;
-  const biz = s.business || "Your business";
+  $("mode").innerHTML = `<span class="dot"></span><span>${demo ? "Demo" : `PayPal ${esc(s.mode)}`}</span><span class="long">${chatReady() ? " · chat on" : " · MCP ready"}</span>`;
+  const biz = bizName || s.business || "Your business";
   $("biz-name").textContent = biz; $("biz-mark").textContent = biz[0].toUpperCase(); $("avatar").textContent = biz[0].toUpperCase();
   $("biz-sub").textContent = demo ? "Demo data" : `PayPal ${s.mode}`;
+  const h = new Date().getHours(), part = h < 12 ? "morning" : h < 17 ? "afternoon" : "evening";
+  $("greet").textContent = `Good ${part}${bizName || s.business ? `, ${biz.split(/\s+/)[0]}` : ""}. What are we getting paid for?`;
   $("mcp").textContent = s.mcp_url + (s.locked ? "?key=…" : "");
   const t = s.totals[0] || { currency: "USD", owed: 0, overdue: 0, overdue_count: 0, collected: 0 };
-  const unpaid = s.invoices.filter((i) => ["SENT", "PARTIALLY_PAID"].includes(i.status));
+  const unpaid = s.invoices.filter(keep.unpaid);
   $("k-owed").textContent = fmt(t.owed, t.currency); $("k-owed-s").textContent = `${unpaid.length} unpaid invoice${unpaid.length === 1 ? "" : "s"}`;
   $("k-over").textContent = fmt(t.overdue, t.currency); $("k-over-card").classList.toggle("bad", t.overdue > 0);
   $("k-over-s").textContent = t.overdue_count ? `${t.overdue_count} past the due date` : "Nothing late";
   $("k-coll").textContent = fmt(t.collected, t.currency);
   $("inv-count").textContent = `${s.invoices.length} recent`;
-  $("inv").innerHTML = s.invoices.length ? s.invoices.map((i) => {
+  renderFilters(); renderRows();
+  seen = new Map(s.invoices.map((i) => [i.id, i.status + i.amount_due]));
+  chart(t); statusBars();
+  $("feed").innerHTML = s.activity.length ? s.activity.slice(0, 25).map((a) => `<li><time>${new Date(a.at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</time><span>${esc(describe(a))}</span></li>`).join("") : "<li>Nothing yet.</li>";
+  notice(); paintChips();
+}
+function renderFilters() {
+  if (!$("filters").children.length) {
+    $("filters").innerHTML = FILTERS.map(([k, l]) => `<button class="fchip" type="button" data-f="${k}">${l}<b></b></button>`).join("") +
+      `<label class="fsearch">${icon("search")}<span class="sr">Search invoices</span><input id="inv-q" placeholder="Search customer…"></label>`;
+    $("filters").addEventListener("click", (e) => { const b = e.target.closest("[data-f]"); if (b) { filter = b.dataset.f; renderFilters(); renderRows(); } });
+    $("inv-q").addEventListener("input", (e) => { query = e.target.value.trim().toLowerCase(); renderRows(); });
+  }
+  $("filters").querySelectorAll("[data-f]").forEach((b) => { b.classList.toggle("on", b.dataset.f === filter); b.querySelector("b").textContent = state.invoices.filter(keep[b.dataset.f]).length; });
+}
+function renderRows() {
+  const list = state.invoices.filter(keep[filter]).filter((i) => !query || i.customer.toLowerCase().includes(query) || String(i.number).includes(query));
+  $("inv").innerHTML = list.length ? list.map((i) => {
     const flash = seen.size && seen.get(i.id) !== i.status + i.amount_due;
     const ini = i.customer.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
-    return `<li class="${flash ? "flash" : ""}"><span class="ini">${esc(ini)}</span><span class="who">${esc(i.customer)}</span><span class="amt">${fmt(i.total, i.currency)}</span>
-      <span class="meta">#${esc(i.number || "")} · due ${esc(i.due_date || "—")}${i.amount_due && i.amount_due !== i.total ? ` · ${fmt(i.amount_due, i.currency)} left` : ""}${i.pay_link ? ` · <a href="${esc(i.pay_link)}" target="_blank" rel="noopener">Pay link</a>` : ""}</span><span class="r2">${badge(i)}</span></li>`;
-  }).join("") : `<li class="empty">No invoices yet. Ask Tally to make one.</li>`;
-  seen = new Map(s.invoices.map((i) => [i.id, i.status + i.amount_due]));
-  chart(t);
-  $("feed").innerHTML = s.activity.length ? s.activity.slice(0, 25).map((a) => `<li><time>${new Date(a.at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</time><span>${esc(describe(a))}</span></li>`).join("") : "<li>Nothing yet.</li>";
-  notice();
+    return `<li class="${flash ? "flash" : ""}" data-id="${esc(i.id)}" tabindex="0"><span class="ini">${esc(ini)}</span><span class="who">${esc(i.customer)}</span><span class="amt">${fmt(i.total, i.currency)}</span>
+      <span class="meta">#${esc(i.number || "")} · due ${esc(i.due_date || "—")}${i.amount_due && i.amount_due !== i.total ? ` · ${fmt(i.amount_due, i.currency)} left` : ""}</span><span class="r2">${badge(i)}</span></li>`;
+  }).join("") : `<li class="empty" style="cursor:default">${state.invoices.length ? "Nothing matches." : "No invoices yet. Ask Tally to make one."}</li>`;
+}
+$("inv").addEventListener("click", (e) => { const li = e.target.closest("li[data-id]"); if (li) openInvoice(li.dataset.id); });
+$("inv").addEventListener("keydown", (e) => { if (e.key === "Enter") { const li = e.target.closest("li[data-id]"); if (li) openInvoice(li.dataset.id); } });
+
+function openInvoice(id) {
+  const i = state.invoices.find((x) => x.id === id); if (!i) return;
+  const open = keep.unpaid(i);
+  $("ip-title").textContent = `${i.customer}`;
+  $("ip-body").innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="hint" style="display:block;font:500 11.5px var(--mono);letter-spacing:.08em;text-transform:uppercase">Invoice #${esc(i.number || "")}</span>${badge(i)}</div>
+    <p class="big">${fmt(i.amount_due || i.total, i.currency)}</p><p style="margin:0;color:var(--ink-3)">${i.amount_due ? "still to pay" : "paid in full"}${i.customer_email ? ` · ${esc(i.customer_email)}` : ""}</p>
+    <dl class="facts"><dt>Issued</dt><dd>${esc(i.invoice_date || "—")}</dd><dt>Due</dt><dd>${esc(i.due_date || "—")}</dd><dt>Total</dt><dd>${fmt(i.total, i.currency)}</dd><dt>Paid</dt><dd>${fmt(i.paid, i.currency)}</dd></dl>
+    <div class="inv-card" style="margin:0;width:100%">${card(i)}</div>
+    <div class="stack">
+      ${i.status === "DRAFT" ? `<button class="wide-btn acc" data-ask="Send invoice #${esc(i.number)} for ${esc(i.customer)} to the customer">${icon("send")}Ask Tally to send it</button>` : ""}
+      ${open ? `<button class="wide-btn acc" data-ask="Remind ${esc(i.customer)} about invoice #${esc(i.number)}${i.overdue ? ", it's overdue" : ""}. Keep it friendly.">${icon("bell")}Ask Tally to remind them</button>
+      <button class="wide-btn" data-ask="${esc(i.customer)} paid ${fmt(i.amount_due, i.currency)} by bank transfer on invoice #${esc(i.number)}">${icon("wallet")}Record a payment</button>` : ""}
+      ${i.pay_link ? `<a class="wide-btn" href="${esc(i.pay_link)}" target="_blank" rel="noopener">${icon("link")}Open the customer's pay page</a>` : ""}
+    </div>`;
+  $("ip-body").querySelectorAll("[data-ask]").forEach((b) => b.addEventListener("click", () => { closePanels(); newChat(); prefill(b.dataset.ask); }));
+  openPanel("inv-panel");
 }
 function chart(t) {
   const parts = [["Collected", t.collected, "var(--ok)"], ["Owed, not late", Math.max(0, t.owed - t.overdue), "var(--acc-btn)"], ["Overdue", t.overdue, "var(--bad)"]];
   const total = parts.reduce((s, p) => s + p[1], 0);
   $("chart-cur").textContent = t.currency;
   if (!total) { $("chart").innerHTML = `<p class="empty" style="padding:12px 0">No money in play yet.</p>`; $("legend").innerHTML = ""; return; }
-  let x = 0; const W = 100;
-  const bars = parts.filter((p) => p[1] > 0).map(([, v, c]) => { const w = (v / total) * W; const r = `<rect x="${x}" y="0" width="${Math.max(w - .6, .4)}" height="10" rx="1.5" fill="${c}"/>`; x += w; return r; }).join("");
+  let x = 0;
+  const bars = parts.filter((p) => p[1] > 0).map(([, v, c]) => { const w = (v / total) * 100; const r = `<rect x="${x}" y="0" width="${Math.max(w - .6, .4)}" height="10" rx="1.5" fill="${c}"/>`; x += w; return r; }).join("");
   $("chart").innerHTML = `<svg viewBox="0 0 100 10" preserveAspectRatio="none" style="height:14px;border-radius:4px" role="img" aria-label="Collected, owed and overdue">${bars}</svg>`;
   $("legend").innerHTML = parts.map(([l, v, c]) => `<span><i style="background:${c}"></i>${l} · <b>${fmt(v, t.currency)}</b></span>`).join("");
 }
+function statusBars() {
+  const rows = [["Draft", keep.draft, "var(--ink-3)"], ["Unpaid", (i) => keep.unpaid(i) && !i.overdue, "var(--blue)"], ["Overdue", keep.overdue, "var(--bad)"], ["Paid", keep.paid, "var(--ok)"]];
+  const counts = rows.map(([, f]) => state.invoices.filter(f).length), max = Math.max(1, ...counts);
+  $("bars").innerHTML = rows.map(([l, , c], k) => `<div class="bar-row"><span>${l}</span><span class="bar-track"><span class="bar-fill" style="display:block;width:${(counts[k] / max) * 100}%;background:${c}"></span></span><b>${counts[k]}</b></div>`).join("");
+}
 function describe(a) {
   if (a.source === "paypal") return a.invoice ? `PayPal: ${a.invoice.customer} paid ${fmt(a.invoice.paid, a.invoice.currency)}` : `PayPal: ${a.tool}`;
-  const who = a.source === "mcp" ? "AI assistant" : "Tally";
-  return `${who} · ${VERB[a.tool] || a.tool}${a.invoice ? ` · ${a.invoice.customer} ${fmt(a.invoice.total, a.invoice.currency)}` : ""}${a.ok ? "" : " (failed)"}`;
+  return `${a.source === "mcp" ? "AI assistant" : "Tally"} · ${VERB[a.tool] || a.tool}${a.invoice ? ` · ${a.invoice.customer} ${fmt(a.invoice.total, a.invoice.currency)}` : ""}${a.ok ? "" : " (failed)"}`;
 }
 
+// ---------------------------------------------------------------- settings
+const mask = (k) => `${k.slice(0, 10)}…${k.slice(-4)}`;
+function paintKey() {
+  $("key-state").innerHTML = aiKey
+    ? `${icon("check")}<span class="grow">Using your key <code>${esc(mask(aiKey))}</code></span><span class="badge ok">Saved here</span>`
+    : state?.agent ? `${icon("shield")}<span class="grow">Using the server's key. Add your own to use your account instead.</span><span class="badge blue">Server</span>`
+      : `${icon("key")}<span class="grow">No key yet, so chat is off here.</span><span class="badge warn">Off</span>`;
+  $("key-del").style.display = aiKey ? "" : "none";
+  $("model").innerHTML = (state?.models || ["claude-sonnet-5-5"]).map((m) => `<option value="${m}"${(model || state?.default_model) === m ? " selected" : ""}>${m}</option>`).join("");
+  $("biz-in").value = bizName;
+  const pref = store.get("upa-theme", "system");
+  $("theme-seg").querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.t === pref));
+}
+function openSettings(focus) {
+  paintKey(); openPanel("settings");
+  setTimeout(() => (focus === "model" ? $("model") : $("key-in")).focus(), 60);
+}
+$("open-settings").addEventListener("click", () => openSettings());
+$("settings-top").addEventListener("click", () => openSettings());
+$("key-eye").addEventListener("click", () => { $("key-in").type = $("key-in").type === "password" ? "text" : "password"; });
+$("key-save").addEventListener("click", async () => {
+  const k = $("key-in").value.trim();
+  if (!k) return toast("Paste your key first", "key");
+  $("key-save").disabled = true; $("key-save").innerHTML = `${icon("clock")}Checking…`;
+  const r = await fetch("/api/key/check", { method: "POST", headers: { "content-type": "application/json", "x-anthropic-key": k, ...(key ? { "x-access-key": key } : {}) }, body: JSON.stringify({ model: model || undefined }) }).then((x) => x.json()).catch(() => ({ ok: false, error: "Couldn't reach the server." }));
+  $("key-save").disabled = false; $("key-save").innerHTML = `${icon("check")}Test &amp; save`;
+  if (!r.ok) return toast(r.error || "That key didn't work", "x");
+  aiKey = k; store.set("upa-anthropic", k); $("key-in").value = ""; $("key-in").type = "password";
+  paintKey(); render(); toast("Key saved. Chat is on.");
+});
+$("key-del").addEventListener("click", () => { aiKey = ""; store.set("upa-anthropic", null); paintKey(); render(); toast("Key removed from this browser", "trash"); });
+$("model").addEventListener("change", (e) => { model = e.target.value === state?.default_model ? "" : e.target.value; store.set("upa-model", model || null); paintChips(); toast(`Model: ${e.target.value}`); });
+$("biz-in").addEventListener("input", (e) => { bizName = e.target.value.trim(); store.set("upa-biz", bizName || null); render(); });
+$("theme-seg").addEventListener("click", (e) => { const b = e.target.closest("[data-t]"); if (b) { store.set("upa-theme", b.dataset.t); applyTheme(); paintKey(); } });
+$("clear-chats").addEventListener("click", () => { if (!chats.length) return toast("No chats to delete", "trash"); if (!confirm("Delete all chats in this browser?")) return; chats = []; saveChats(); newChat(); toast("All chats deleted", "trash"); });
+
 // ---------------------------------------------------------------- chrome
+function openPanel(id) { $("veil").classList.add("on"); $(id).classList.add("on"); $(id).setAttribute("aria-hidden", "false"); }
+function closePanels() { $("veil").classList.remove("on"); document.querySelectorAll(".drawer-panel, .modal").forEach((p) => { p.classList.remove("on"); p.setAttribute("aria-hidden", "true"); }); }
+$("veil").addEventListener("click", closePanels);
+document.querySelectorAll("[data-close]").forEach((b) => b.addEventListener("click", closePanels));
 function show(v) {
   document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("on", t.dataset.view === v));
   $("agent").classList.toggle("on", v === "agent"); $("dash").classList.toggle("on", v === "dash");
@@ -529,13 +771,24 @@ $("collapse").addEventListener("click", () => { if (mobile()) $("app").classList
 $("scrim").addEventListener("click", closeDrawer);
 if (store.get("upa-collapsed", false)) $("app").classList.add("collapsed");
 
-function setTheme(t) { document.documentElement.dataset.theme = t; $("theme").innerHTML = icon(t === "dark" ? "sun" : "moon"); store.set("upa-theme", t); }
-setTheme(store.get("upa-theme", matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
-$("theme").addEventListener("click", () => setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark"));
-$("copy").addEventListener("click", async () => { try { await navigator.clipboard.writeText(state.mcp_url); $("copy").innerHTML = `${icon("check")}Copied`; setTimeout(() => ($("copy").innerHTML = `${icon("copy")}Copy`), 1500); } catch {} });
+function applyTheme() {
+  const pref = store.get("upa-theme", "system");
+  const t = pref === "system" ? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : pref;
+  document.documentElement.dataset.theme = t; $("theme").innerHTML = icon(t === "dark" ? "sun" : "moon");
+}
+applyTheme();
+matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", applyTheme);
+$("theme").addEventListener("click", () => { store.set("upa-theme", document.documentElement.dataset.theme === "dark" ? "light" : "dark"); applyTheme(); });
+$("copy").addEventListener("click", async () => { try { await navigator.clipboard.writeText(state.mcp_url); toast("MCP address copied"); } catch {} });
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") return closePanels();
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); newChat(); return; }
+  if (e.key === "/" && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); show("agent"); activeInput().focus(); }
+});
 
 async function refresh() { const s = await api("/api/state").catch(() => null); if (s && !s.error) { state = s; render(); } }
-renderChats(); layout(); show(store.get("upa-view", "agent"));
+renderChats(); layout(); show(store.get("upa-view", "agent")); paintChips();
 refresh(); setInterval(refresh, 4000);
 </script>
 </body>

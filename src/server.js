@@ -6,7 +6,7 @@ import { timingSafeEqual } from "node:crypto";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { createMcpServer } from "./mcp.js";
 import { paypalFromEnv } from "./config.js";
-import { agentConfigured, chat } from "./agent.js";
+import { agentConfigured, chat, checkKey, MODELS } from "./agent.js";
 import { moneySummary, isOverdue } from "./tools.js";
 import { summarize } from "./paypal.js";
 
@@ -50,7 +50,7 @@ const send = (res, status, data, headers = {}) => {
   res.writeHead(status, { "content-type": isText ? "text/html; charset=utf-8" : "application/json", "cache-control": "no-store", ...headers });
   res.end(isText ? data : JSON.stringify(data));
 };
-const CORS = { "access-control-allow-origin": "*", "access-control-allow-headers": "authorization, content-type, mcp-protocol-version, mcp-session-id", "access-control-allow-methods": "GET, POST, OPTIONS", "access-control-expose-headers": "mcp-session-id" };
+const CORS = { "access-control-allow-origin": "*", "access-control-allow-headers": "authorization, content-type, mcp-protocol-version, mcp-session-id, x-access-key", "access-control-allow-methods": "GET, POST, OPTIONS", "access-control-expose-headers": "mcp-session-id" };
 
 const server = createServer(async (req, res) => {
   const url = new URL(req.url, SITE);
@@ -77,15 +77,23 @@ const server = createServer(async (req, res) => {
     if (req.method === "GET" && url.pathname === "/api/state") {
       if (!allowed(req, url)) return send(res, 401, { error: "locked" });
       const invoices = (await paypal.listInvoices({ pageSize: 50 })).map(summarize).map((s) => ({ ...s, overdue: isOverdue(s) }));
-      return send(res, 200, { mode: paypal.mode, business: process.env.BUSINESS_NAME || "", agent: agentConfigured(), mcp_url: `${SITE}/mcp`, locked: Boolean(KEY), invoices, totals: moneySummary(invoices), activity });
+      return send(res, 200, { mode: paypal.mode, business: process.env.BUSINESS_NAME || "", agent: agentConfigured(), models: MODELS, default_model: process.env.AGENT_MODEL || MODELS[0], mcp_url: `${SITE}/mcp`, locked: Boolean(KEY), invoices, totals: moneySummary(invoices), activity });
     }
 
     // ---- built-in chat
     if (req.method === "POST" && url.pathname === "/api/chat") {
       if (!allowed(req, url)) return send(res, 401, { error: "locked" });
       if (limited(ip)) return send(res, 429, { error: "That's a lot of messages. Try again in a while." });
-      const { messages } = await body(req);
-      return send(res, 200, await chat(messages, { paypal, onEvent: log }));
+      const { messages, model } = await body(req);
+      return send(res, 200, await chat(messages, { paypal, onEvent: log, apiKey: req.headers["x-anthropic-key"], model }));
+    }
+
+    // ---- Settings: check a pasted Anthropic key (nothing is stored)
+    if (req.method === "POST" && url.pathname === "/api/key/check") {
+      if (!allowed(req, url)) return send(res, 401, { error: "locked" });
+      if (limited(`key:${ip}`, 20)) return send(res, 429, { ok: false, error: "Too many checks. Try again in a while." });
+      const { model } = await body(req);
+      return send(res, 200, await checkKey(req.headers["x-anthropic-key"], { model }));
     }
 
     // ---- PayPal webhooks: a customer paid (or the invoice changed)

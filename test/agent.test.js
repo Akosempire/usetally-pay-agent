@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { demoClient } from "../src/paypal.js";
-import { chat } from "../src/agent.js";
+import { chat, checkKey } from "../src/agent.js";
 
 // a scripted model: first asks for a tool, then answers
 test("the chat runs Claude's tool calls and returns the conversation", async () => {
@@ -22,9 +22,28 @@ test("the chat runs Claude's tool calls and returns the conversation", async () 
   assert.equal(r.messages.length, 4); // user, assistant(tool_use), user(tool_result), assistant
 });
 
-test("without a key the chat says how to use MCP instead", async () => {
+test("without a key the chat points to Settings and MCP", async () => {
   const r = await chat([{ role: "user", content: "hi" }], { paypal: demoClient(), env: {} });
-  assert.match(r.error, /ANTHROPIC_API_KEY/);
+  assert.match(r.error, /Settings/);
+});
+
+test("a key from Settings is used for that request only, and a bad one is rejected", async () => {
+  let headers, body;
+  const fetchImpl = async (_, init) => { headers = init.headers; body = JSON.parse(init.body); return new Response(JSON.stringify({ stop_reason: "end_turn", content: [{ type: "text", text: "ok" }] })); };
+  const key = "sk-ant-api03-" + "a".repeat(40);
+  await chat([{ role: "user", content: "hi" }], { paypal: demoClient(), env: { ANTHROPIC_API_KEY: "server-key" }, fetchImpl, apiKey: key, model: "claude-haiku-5-5" });
+  assert.equal(headers["x-api-key"], key); assert.equal(body.model, "claude-haiku-5-5");
+  await chat([{ role: "user", content: "hi" }], { paypal: demoClient(), env: { ANTHROPIC_API_KEY: "server-key" }, fetchImpl, apiKey: "not-a-key", model: "gpt-9" });
+  assert.equal(headers["x-api-key"], "server-key"); assert.equal(body.model, "claude-sonnet-5-5");
+  const r401 = await chat([{ role: "user", content: "hi" }], { paypal: demoClient(), env: {}, apiKey: key, fetchImpl: async () => new Response("{}", { status: 401 }) });
+  assert.equal(r401.keyRejected, true); assert.match(r401.error, /didn't accept/);
+});
+
+test("checkKey: format first, then a 1-token call", async () => {
+  assert.equal((await checkKey("nope")).ok, false);
+  const key = "sk-ant-api03-" + "b".repeat(40);
+  assert.deepEqual(await checkKey(key, { fetchImpl: async () => new Response("{}", { status: 200 }) }), { ok: true });
+  assert.match((await checkKey(key, { fetchImpl: async () => new Response("{}", { status: 401 }) })).error, /didn't accept/);
 });
 
 test("the browser can't inject a system turn or start mid-tool", async () => {

@@ -77,7 +77,7 @@ const server = createServer(async (req, res) => {
     if (req.method === "GET" && url.pathname === "/api/state") {
       if (!allowed(req, url)) return send(res, 401, { error: "locked" });
       const invoices = (await paypal.listInvoices({ pageSize: 50 })).map(summarize).map((s) => ({ ...s, overdue: isOverdue(s) }));
-      return send(res, 200, { mode: paypal.mode, agent: agentConfigured(), mcp_url: `${SITE}/mcp`, locked: Boolean(KEY), invoices, totals: moneySummary(invoices), activity });
+      return send(res, 200, { mode: paypal.mode, business: process.env.BUSINESS_NAME || "", agent: agentConfigured(), mcp_url: `${SITE}/mcp`, locked: Boolean(KEY), invoices, totals: moneySummary(invoices), activity });
     }
 
     // ---- built-in chat
